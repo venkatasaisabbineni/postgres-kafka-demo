@@ -18,5 +18,6 @@
     "value.converter.schemas.enable": "false",
     "transforms": "unwrap",
     "transforms.unwrap.type": "io.debezium.transforms.ExtractNewRecordState"
+    "topic.prefix": "dbserver1"
   }
 }

@@ -1,24 +1,21 @@
-version: '2'
 services:
-
   postgres:
-    image: debezium/postgres:13
+    image: debezium/postgres:latest
     environment:
       POSTGRES_PASSWORD: postgres
-    command: postgres -c config_file=/home/config/postgresql.conf
     ports:
       - 5432:5432
     volumes:
       - $PWD:/home/config
 
   zookeeper:
-    image: confluentinc/cp-zookeeper:7.3.2
+    image: confluentinc/cp-zookeeper:latest
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
 
   kafka:
-    image: confluentinc/cp-kafka:7.3.2
+    image: confluentinc/cp-kafka:latest
     depends_on:
       - zookeeper
     ports:
@@ -27,11 +24,13 @@ services:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
-      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
 
   schema-registry:
-    image: confluentinc/cp-schema-registry:7.3.2
+    image: confluentinc/cp-schema-registry:latest
     hostname: schema-registry
     ports:
       - 8081:8081
@@ -45,7 +44,7 @@ services:
       SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8081
 
   ksql-server:
-    image: confluentinc/ksqldb-server:0.28.2
+    image: confluentinc/cp-ksql-server:latest
     depends_on:
       - kafka
       - schema-registry
@@ -56,7 +55,7 @@ services:
       KSQL_KSQL_SERVICE_ID: ksql-server
 
   connect:
-    image: debezium/connect:1.9
+    image: debezium/connect:latest
     depends_on:
       - zookeeper
       - kafka

@@ -191,11 +191,10 @@ and another table calculating the average chance of admission for
 students with and without research experience:
 
 ```
-CREATE TABLE research_ave_boost AS \
-     SELECT research, SUM(admit_chance)/COUNT(admit_chance) as ave_chance \
-     FROM research_boost \
-     WITH (KAFKA_TOPIC='research_ave_boost', VALUE_FORMAT='delimited', KEY='research') \
-     GROUP BY research;
+CREATE TABLE research_ave_boost WITH (KAFKA_TOPIC='research_ave_boost', VALUE_FORMAT='DELIMITED') AS \
+   SELECT research, SUM(admit_chance)/COUNT(admit_chance) AS ave_chance \
+   FROM research_boost \
+   GROUP BY research;
 ```
 
 ## Add a connector to sink a KSQL table back to Postgres

@@ -117,7 +117,7 @@ docker exec -it <kafka-container-id> /bin/bash
 and listing the available topics:
 
 ```
-/usr/bin/kafka-topics --list --zookeeper zookeeper:2181
+/usr/bin/kafka-topics --list --bootstrap-server kafka:9092
 ```
 
 ## Create tables in KSQL

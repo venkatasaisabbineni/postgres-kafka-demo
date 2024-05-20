@@ -56,9 +56,7 @@ files inside, create a database called `students`, and load the data on
 students' chance of admission into the `admission` table.
 
 ```
-docker run -it --rm --network=postgres-kafka-demo_default \
-         -v $PWD:/home/data/ \
-         postgres:11.0 psql -h postgres -U postgres
+docker run -it --rm --network=postgres-kafka-demo_default -v $PWD:/home/data/ debezium/postgres:latest psql -h postgres -U postgres
 ```
 
 Password = postgres
